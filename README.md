@@ -2,7 +2,7 @@
 
 Para utilizar el bot necesitamos un Token.
 
-- Hay que hablar con el [@botfather](https://t.me/botfather] para crear un bot y que nos dé un token para usar con el bot.
+- Hay que hablar con el [@botfather](https://t.me/botfather) para crear un bot y que nos dé un token para usar con el bot.
 - Ver: [Bots: An introduction for developers](https://core.telegram.org/bots) para más detalles.
 
 ### Estructura del proyecto:
