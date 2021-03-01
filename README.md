@@ -5,6 +5,11 @@
 Se quiere poder anotar cosas desde telegram y crear notas compartidas en sus
 grupos.
 
+## Solución
+
+Se propone una aplicación que, mediante el uso de alguna biblioteca que implemente la
+API de bots de telegram, almacene y muestre las notas o anotaciones enviadas por los usuarios.
+
 ## Instalación/Uso (WIP)
 
 Para utilizar el bot necesitamos un Token.
