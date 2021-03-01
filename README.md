@@ -1,5 +1,10 @@
 # Bot sencillo de Telegram usando lenguaje Go.
 
+## Problema
+
+Se quiere poder anotar cosas desde telegram y crear notas compartidas en sus
+grupos.
+
 ## Instalación/Uso (WIP)
 
 Para utilizar el bot necesitamos un Token.
