@@ -10,6 +10,15 @@ grupos.
 Se propone una aplicación que, mediante el uso de alguna biblioteca que implemente la
 API de bots de telegram, almacene y muestre las notas o anotaciones enviadas por los usuarios.
 
+### Tecnologías
+
+* Logging: Se usa la biblioteca ['log'](https://golang.org/pkg/log).
+* Almacenamiento: Se usa [MongoDB](https://www.mongodb.com/es).
+	* Se crea una colección de Anotaciones que almacene el id del chat, y la
+	anotación en cuestión.
+* Configuración: Se usa un fichero JSON que almacene la configuración junto
+con la biblioteca ['encoding/json'](https://golang.org/pkg/encoding/json/).
+
 ## Instalación/Uso (WIP)
 
 Para utilizar el bot necesitamos un Token.
