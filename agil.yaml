@@ -1,4 +1,7 @@
 personas:
     - Juan Rueda
     - Pilar Gómez
-
+errores:
+    - src/core/core.go
+    - src/tg/tg.go
+    - src/data/data.go
