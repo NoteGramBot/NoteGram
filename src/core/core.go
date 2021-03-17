@@ -13,8 +13,9 @@ import (
 type NotegramError struct {
    msg string
 }
-
-// Ejemplo: NotegramError.Error("Invalid Api Key")
+func (ee *NotegramError) Error() string {
+    return ee.msg
+}
 
 
 func CoreHello() string {

@@ -9,8 +9,9 @@ type DataError struct {
    msg string
 }
 
-// Ejemplo: DataError.Error("No se puede conectar a la BBDD")
-
+func (ee *DataError) Error() string {
+    return ee.msg
+}
 
 func DataHello() string {
    return "Hello from Data package"

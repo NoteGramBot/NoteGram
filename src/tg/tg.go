@@ -5,12 +5,14 @@
 
 package tg
 
+// Nota: Habría que llevar un conteo de tipos de error etc...
 type TelegramError struct {
    msg string
 }
 
-// Ejemplo: TelegramError.Error("Invalid Api Key")
-
+func (ee *TelegramError) Error() string {
+    return ee.msg
+}
 
 func TgHello() string {
    return "Hello from TG Package"
