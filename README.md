@@ -1,5 +1,7 @@
 # Bot sencillo de Telegram usando lenguaje Go.
 
+🚨🚨🚨 Atención, Achtung, Cuidadín: Todos los issues se tienen que cerrar con un commit 🚨🚨🚨
+
 ## Problema
 
 Se quiere poder anotar cosas desde telegram y crear notas compartidas en sus
