@@ -1,7 +1,16 @@
 personas:
     - Juan Rueda
     - Pilar Gómez
+
 excepciones:
     - src/core/core.go
     - src/tg/tg.go
     - src/data/data.go
+
+lenguaje:
+    - go
+
+taskfile:
+    - maskfile.md
+
+
