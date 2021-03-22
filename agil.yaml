@@ -13,4 +13,7 @@ lenguaje:
 taskfile:
     - maskfile.md
 
+linter:
+    - go vet
+
 

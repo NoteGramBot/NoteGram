@@ -50,7 +50,7 @@ func GetConfig(jsonfilename string) (NotegramConfig, error) {
 	jsconfig, ee := ioutil.ReadFile(jsonfilename)
 
 	if ee != nil {
-		fmt.Println("No se ha podido leer el fichero config.json\n")
+		fmt.Println("No se ha podido leer el fichero config.json")
 		return conf, ee
 	}
 
