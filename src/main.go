@@ -16,7 +16,7 @@ func main() {
 	botconfig, err := core.GetConfig("config.json")
 
 	if err != nil {
-		fmt.Println("Configuration summary:\n")
+		fmt.Println("Configuration summary:")
 		fmt.Print(botconfig)
 	}
 
