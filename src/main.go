@@ -26,6 +26,9 @@ func main() {
 		fmt.Print(botconfig)
 	}
 
+        telegram.StartBot(botconfig.Secret)
+
+
 	fmt.Println("main function")
 	fmt.Println(core.CoreHello())
 	fmt.Println(data.DataHello())
