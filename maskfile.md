@@ -22,6 +22,17 @@ BINDIR=$PWD/bin
 cd src ; go vet Notegram Notegram/core Notegram/tg Notegram/data
 ~~~
 
+## depend
+
+> Instala dependencias
+
+~~~sh
+echo "Instalando dependencias"
+BINDIR=$PWD/bin
+cd src ; go get github.com/go-telegram-bot-api/telegram-bot-api
+~~~
+
+
 ## hello
 
 > Just say jellow
