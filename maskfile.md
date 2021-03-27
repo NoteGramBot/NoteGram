@@ -33,6 +33,14 @@ cd src ; go get github.com/go-telegram-bot-api/telegram-bot-api
 ~~~
 
 
+## test
+
+> Pasa los test del proyecto
+~~~sh
+cd src ; go test ./...
+~~~
+
+
 ## hello
 
 > Just say jellow
