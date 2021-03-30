@@ -16,8 +16,8 @@ taskfile:
 linter:
     - go vet
 
-tests:
-    - src/core/core.go
+test:
+    - src/core/core_test.go
 
 aserciones: "@test"
 
