@@ -9,7 +9,8 @@ branches:
 # Instalamos desde github y lo copiamos a /usr/local/bin
 
 before_install:
-   - echo "Ejecutando como usuario: $(whoami)"
+   - echo "Ejecutando como usuario"
+   - whoami
    - cd /tmp
    - wget https://github.com/jakedeichert/mask/releases/download/v0.10.0/mask-v0.10.0-x86_64-unknown-linux-gnu.zip 
    - unzip -j mask-v0.10.0-x86_64-unknown-linux-gnu.zip 
