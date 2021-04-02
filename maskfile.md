@@ -49,3 +49,24 @@ cd src ; go test ./...
 echo Jellow
 ~~~
 
+
+## yaml
+> Check Yaml files
+> Comprueba que los ficheros yaml están bien.
+> Prueba a cargar agil.yaml y .travis.yml
+
+~~~python
+import yaml
+
+files = [ '.travis.yml','agil.yaml' ] 
+
+for ff in files:
+   print(f"Cargando {ff}")
+   with open(ff, 'r') as fp:
+      yml = fp.read()
+
+   print(f"Parseando {ff}")
+   out = yaml.load(yml)
+
+   print(f"Resultado:\n{out}")
+~~~
