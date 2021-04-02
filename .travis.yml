@@ -1,5 +1,10 @@
 language: go
 
+branches:
+   only:
+      - master
+      - /^v.*$/
+
 # Necesitamos mask para hacer la integracion
 # Instalamos desde github y lo copiamos a /usr/local/bin
 
