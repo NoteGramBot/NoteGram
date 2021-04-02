@@ -17,6 +17,8 @@ before_install:
    - sudo cp /tmp/mask /usr/local/bin
 
 # Script para lanzar el build
-script: /bin/true
+script: 
+   - mask depend
+   - mask test
 
 
