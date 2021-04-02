@@ -22,8 +22,7 @@ test:
 aserciones: "@test"
 
 testing:
-    - runner: mask
-    - framework: go
-
+    runner: mask
+    framework: go
 
 
