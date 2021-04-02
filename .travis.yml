@@ -4,10 +4,12 @@ language: go
 # Instalamos desde github y lo copiamos a /usr/local/bin
 
 before_install:
-   curl https://github.com/jakedeichert/mask/releases/download/v0.10.0/mask-v0.10.0-x86_64-unknown-linux-gnu.zip > /tmp/mask.zip
-   unzip -t /tmp/mask.zip
-   (cd /tmp ; unzip mask.zip )
-   cp /tmp/mask /usr/local/bin
+   - echo "Quien soy: $(whoami)·
+   - cd /tmp
+   - wget https://github.com/jakedeichert/mask/releases/download/v0.10.0/mask-v0.10.0-x86_64-unknown-linux-gnu.zip 
+   - unzip -j mask-v0.10.0-x86_64-unknown-linux-gnu.zip 
+(cd /tmp ; unzip mask.zip )
+   - sudo cp /tmp/mask /usr/local/bin
 
 # Script para lanzar el build
 script: /bin/true
