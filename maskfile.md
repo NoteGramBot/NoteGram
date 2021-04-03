@@ -57,8 +57,10 @@ echo Jellow
 
 ~~~python
 import yaml
+import pprint
 
 files = [ '.travis.yml','agil.yaml' ] 
+pp = pprint.PrettyPrinter(indent=2)
 
 for ff in files:
    print(f"Cargando {ff}")
@@ -68,5 +70,6 @@ for ff in files:
    print(f"Parseando {ff}")
    out = yaml.load(yml)
 
-   print(f"Resultado:\n{out}")
+   print(f"Resultado:\n")
+   pp.pprint(out)
 ~~~
