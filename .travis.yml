@@ -24,8 +24,6 @@ before_install:
 # Script para lanzar el build
 script: 
    - echo $PWD
-   - cd NoteGramBot/NoteGram
    - mask depend
    - mask test
-
 
