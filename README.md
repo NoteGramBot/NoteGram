@@ -75,8 +75,7 @@ Cosas a tener en cuenta para modificar / aportar código al proyecto.
 ## Estructura del proyecto:
 
 - 📁 [docs](docs) Documentación
-- 📁[src](src) Código de la aplicación
-- 📁[bin](bin) - Ficheros ejecutables de la aplicacion
+- 📁 [bin](bin) - Ficheros ejecutables de la aplicacion
 
 ## Tecnologías
 
