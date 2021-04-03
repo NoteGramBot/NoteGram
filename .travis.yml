@@ -11,15 +11,11 @@ branches:
 # Instalamos desde github y lo copiamos a /usr/local/bin
 
 before_install:
-   - echo "Ejecutando como usuario"
-   - whoami
-   - echo "Que procesos hay corriendo"
-   - ps -eft
-   - echo "Directorio actual"
-   - pwd
-   - wget https://github.com/jakedeichert/mask/releases/download/v0.10.0/mask-v0.10.0-x86_64-unknown-linux-gnu.zip 
-   - unzip -j mask-v0.10.0-x86_64-unknown-linux-gnu.zip 
-   - sudo cp mask /usr/local/bin
+   - curl -L https://github.com/jakedeichert/mask/releases/download/v0.10.0/mask-v0.10.0-x86_64-unknown-linux-gnu.zip > /tmp/mask.zip
+   - unzip -j /tmp/mask.zip -d /tmp 
+   - sudo cp /tmp/mask /usr/local/bin
+   - rm /tmp/mask.zip
+   - rm /tmp/mask
 
 # Script para lanzar el build
 script: 
