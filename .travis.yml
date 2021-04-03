@@ -11,15 +11,18 @@ branches:
 before_install:
    - echo "Ejecutando como usuario"
    - whoami
-   - cd /tmp
+   - echo "Que procesos hay corriendo"
+   - ps -eft
+   - echo "Directorio actual"
+   - pwd
    - wget https://github.com/jakedeichert/mask/releases/download/v0.10.0/mask-v0.10.0-x86_64-unknown-linux-gnu.zip 
    - unzip -j mask-v0.10.0-x86_64-unknown-linux-gnu.zip 
-   - sudo cp /tmp/mask /usr/local/bin
+   - sudo cp mask /usr/local/bin
 
 # Script para lanzar el build
 script: 
    - echo $PWD
-   - cd ~/NoteGramBot/NoteGram
+   - cd NoteGramBot/NoteGram
    - mask depend
    - mask test
 
