@@ -1,6 +1,7 @@
 # Bot sencillo de Telegram usando lenguaje Go.
 
 [![Build Status](https://travis-ci.com/NoteGramBot/NoteGram.svg?branch=master)](https://travis-ci.com/NoteGramBot/NoteGram)
+[![Go Report Card](https://goreportcard.com/badge/github.com/NoteGramBot/NoteGram)](https://goreportcard.com/report/github.com/NoteGramBot/NoteGram)
 
 ## Problema
 
