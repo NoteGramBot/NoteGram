@@ -6,15 +6,13 @@
 package data
 
 type DataError struct {
-   msg string
+	msg string
 }
 
 func (ee *DataError) Error() string {
-    return ee.msg
+	return ee.msg
 }
 
 func DataHello() string {
-   return "Hello from Data package"
+	return "Hello from Data package"
 }
-
-
