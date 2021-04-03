@@ -3,9 +3,9 @@ personas:
     - Pilar Gómez
 
 excepciones:
-    - src/core/core.go
-    - src/tg/tg.go
-    - src/data/data.go
+    - core/core.go
+    - tg/tg.go
+    - data/data.go
 
 lenguaje:
     - go
@@ -17,7 +17,7 @@ linter:
     - go vet
 
 test:
-    - src/core/core_test.go
+    - core/core_test.go
 
 aserciones: "@test"
 
