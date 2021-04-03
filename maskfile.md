@@ -10,7 +10,7 @@ De momento "solo" tenemos un build de que compila el bot en el directorio ./bin 
 ~~~sh
 echo "Building project (output in bin)"
 BINDIR=$PWD/bin
-cd src ; go build -o $BINDIR
+go build -o $BINDIR
 ~~~
 
 ## check
@@ -19,7 +19,7 @@ cd src ; go build -o $BINDIR
 ~~~sh
 echo "Building project (output in bin)"
 BINDIR=$PWD/bin
-cd src ; go vet Notegram Notegram/core Notegram/tg Notegram/data
+go vet Notegram Notegram/core Notegram/tg Notegram/data
 ~~~
 
 ## depend
@@ -29,7 +29,7 @@ cd src ; go vet Notegram Notegram/core Notegram/tg Notegram/data
 ~~~sh
 echo "Instalando dependencias"
 BINDIR=$PWD/bin
-cd src ; go get github.com/go-telegram-bot-api/telegram-bot-api
+go get github.com/go-telegram-bot-api/telegram-bot-api
 ~~~
 
 
@@ -37,7 +37,7 @@ cd src ; go get github.com/go-telegram-bot-api/telegram-bot-api
 
 > Pasa los test del proyecto
 ~~~sh
-cd src ; go test ./...
+go test ./...
 ~~~
 
 
@@ -49,3 +49,27 @@ cd src ; go test ./...
 echo Jellow
 ~~~
 
+
+## yaml
+> Check Yaml files
+> Comprueba que los ficheros yaml están bien.
+> Prueba a cargar agil.yaml y .travis.yml
+
+~~~python
+import yaml
+import pprint
+
+files = [ '.travis.yml','agil.yaml' ] 
+pp = pprint.PrettyPrinter(indent=2)
+
+for ff in files:
+   print(f"Cargando {ff}")
+   with open(ff, 'r') as fp:
+      yml = fp.read()
+
+   print(f"Parseando {ff}")
+   out = yaml.load(yml)
+
+   print(f"Resultado:\n")
+   pp.pprint(out)
+~~~

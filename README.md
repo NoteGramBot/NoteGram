@@ -1,5 +1,8 @@
 # Bot sencillo de Telegram usando lenguaje Go.
 
+[![Build Status](https://travis-ci.com/NoteGramBot/NoteGram.svg?branch=master)](https://travis-ci.com/NoteGramBot/NoteGram)
+[![Go Report Card](https://goreportcard.com/badge/github.com/NoteGramBot/NoteGram)](https://goreportcard.com/report/github.com/NoteGramBot/NoteGram)
+
 ## Problema
 
 Se quiere poder anotar cosas desde telegram y crear notas compartidas en sus
@@ -72,8 +75,7 @@ Cosas a tener en cuenta para modificar / aportar código al proyecto.
 ## Estructura del proyecto:
 
 - 📁 [docs](docs) Documentación
-- 📁[src](src) Código de la aplicación
-- 📁[bin](bin) - Ficheros ejecutables de la aplicacion
+- 📁 [bin](bin) - Ficheros ejecutables de la aplicacion
 
 ## Tecnologías
 

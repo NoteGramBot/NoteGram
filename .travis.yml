@@ -1,3 +1,25 @@
-language: minimal
+language: go
 
-script: /bin/true
+go: "1.16"
+
+branches:
+   only:
+      - master
+      - /^v.*$/
+
+# Necesitamos mask para hacer la integracion
+# Instalamos desde github y lo copiamos a /usr/local/bin
+
+before_install:
+   - curl -L https://github.com/jakedeichert/mask/releases/download/v0.10.0/mask-v0.10.0-x86_64-unknown-linux-gnu.zip > /tmp/mask.zip
+   - unzip -j /tmp/mask.zip -d /tmp 
+   - sudo cp /tmp/mask /usr/local/bin
+   - rm /tmp/mask.zip
+   - rm /tmp/mask
+
+# Script para lanzar el build
+script: 
+   - echo $PWD
+   - mask depend
+   - mask test
+
