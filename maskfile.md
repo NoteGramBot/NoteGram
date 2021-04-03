@@ -73,3 +73,13 @@ for ff in files:
    print(f"Resultado:\n")
    pp.pprint(out)
 ~~~
+
+## gofmt
+
+> Formatea (todo) el código con gofmt
+
+~~~sh
+for i in $(find . -name '*.go') ; do
+   gofmt -s -w $i
+done
+~~~
