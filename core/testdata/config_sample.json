@@ -4,7 +4,6 @@
 "dbport": 27017, 
 "dbuser": "scott",
 "dbpass": "tiger",
-"database": "notegram"
-"dbcollection": "notas",
+"dbcollection": "notegram",
 "loglevel": "Debug"
 }

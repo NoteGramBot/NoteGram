@@ -83,3 +83,42 @@ for i in $(find . -name '*.go') ; do
    gofmt -s -w $i
 done
 ~~~
+
+## setupmongodb
+
+> Crea entorno de test/desarrollo en mongodb
+
+El entorno contiene:
+ - Usuario scott para crear / acceder a notas.
+ - Base de datos 'notegram'
+ - Collection "notegram.notas"l
+ - Crea una primera nota de ejemplo para que db.notas.find()
+
+~~~sh
+mongo -host localhost <<MONGO_EOF
+use notegram
+
+try {
+   db.createUser({user:"scott", 
+               pwd:"tiger",
+               roles: [ { role:"readWrite", db: "notegram"}] });
+} catch (err) { print(err);}
+
+try {
+   db.createCollection("notas");
+} catch (err) { print(err);}
+
+try {
+   db.notas.insert({
+      _id: "test123",
+      notas: ["Primera nota", 
+           "Segunda nota",
+           "Tercera nota (con cacteres unicode 💩💩💩 )"]
+   });
+} catch (err) { print(err);}
+
+print("Setup terminado");
+
+MONGO_EOF
+~~~
+

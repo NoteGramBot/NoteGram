@@ -6,7 +6,6 @@
 package core
 
 import (
-	"Notegram/data"
 	"Notegram/tg"
 	"encoding/json"
 	"fmt"
@@ -26,13 +25,14 @@ func (ee *NotegramError) Error() string {
 // si no, el paquete encoding/json no puede verlos, y no emite ningún error.
 
 type NotegramConfig struct {
-	Secret       string
-	Dbhost       string
-	Dbport       uint
-	Dbuser       string
-	Dbpass       string
-	Dbcollection string
-	Loglevel     string
+	Secret       string // Telegram secret
+	Dbhost       string // mongodb hostname/ip
+	Dbport       uint   // mongodb port
+	Dbuser       string // mongodb username
+	Dbpass       string // mongodb passwd
+	Dbase        string // mongodb database
+	Dbcollection string // mongodb collection
+	Loglevel     string // loglevel
 }
 
 /*
@@ -68,5 +68,5 @@ func GetConfig(jsonfilename string) (NotegramConfig, error) {
 }
 
 func CoreHello() string {
-	return "Hello from Core package AND " + data.DataHello() + " AND " + tg.TgHello()
+	return "Hello from Core package AND tg/" + tg.TgHello()
 }
