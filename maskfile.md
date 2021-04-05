@@ -110,10 +110,10 @@ try {
 
 try {
    db.notas.insert({
-      _id: "test123",
-      notas: ["Primera nota", 
-           "Segunda nota",
-           "Tercera nota (con cacteres unicode 💩💩💩 )"]
+      user: "test123",
+      content: "Tercera nota (con cacteres unicode 💩💩💩 )",
+      content_type: "test/plain",
+      content_encoding: "utf8"
    });
 } catch (err) { print(err);}
 
