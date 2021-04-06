@@ -31,7 +31,7 @@ type NotegramConnection struct {
 }
 
 type Notes struct {
-	Id              primitive.ObjectID `bson:"_id"`
+	Id              primitive.ObjectID `bson:"_id.ifpresent"`
 	User            string             `bson:user`
 	Content         string             `bson:"content"`
 	ContentType     string             `bson:"content_type"`
@@ -75,24 +75,19 @@ func (conn NotegramConnection) Disconnect() {
 
 // Interfaz CRUD
 
-func (conn NotegramConnection) GetNotas(userid string) []Notes {
-
-	// Hay notas ???
+func (conn NotegramConnection) GetNotas(userid string) ([]Notes, error) {
 
 	var notas []Notes
 
 	db := conn.mongocli.Database(conn.database)
 	coll := db.Collection(conn.dbcollection)
+	cursor, err := coll.Find(conn.ctx, bson.M{"user": userid})
+	err = cursor.All(conn.ctx, &notas)
 
-	err := coll.FindOne(conn.ctx, bson.M{"_id": userid}).Decode(&notas)
-
-	fmt.Println(err)
-
-	return notas
-
+	return notas, err
 }
 
-func WriteNotaUser(config NotegramConnection, username string, nota string) error {
+func (conn NotegramConnection) WriteNota(nota Notes) error {
 
 	// Primero obtenemos todas las notas
 	// Si no hay notas, escribimos una entrada en la collection para ese usuario con una nota
@@ -104,9 +99,4 @@ func WriteNotaUser(config NotegramConnection, username string, nota string) erro
 
 func (ee *DataError) Error() string {
 	return ee.msg
-}
-
-// deprecated
-func DataHello() string {
-	return "Hello from Data package"
 }
