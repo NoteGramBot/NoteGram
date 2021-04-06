@@ -31,7 +31,7 @@ type NotegramConnection struct {
 }
 
 type Notes struct {
-	Id              primitive.ObjectID `bson:"_id.ifpresent"`
+	Id              primitive.ObjectID `bson:"_id,omitempty"`
 	User            string             `bson:user`
 	Content         string             `bson:"content"`
 	ContentType     string             `bson:"content_type"`
@@ -46,7 +46,7 @@ func ConnectToDatabase(config core.NotegramConfig) (NotegramConnection, error) {
 
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	// was: ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	// defer cancel()
+	// defer cancel() - quizá habría que hacer esto en cada llamada porsiaca.
 
 	var connURI string = fmt.Sprintf("mongodb://%s:%s@%s:%d/%s",
 		config.Dbuser,
@@ -56,7 +56,7 @@ func ConnectToDatabase(config core.NotegramConfig) (NotegramConnection, error) {
 		config.Dbase)
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(connURI))
 
-	// Necesitamos esto para hacer un find
+	// Completamos la estructura para llamadas siguientes
 	dc.mongocli = client
 	dc.dbcollection = config.Dbcollection
 	dc.database = config.Dbase
@@ -76,7 +76,6 @@ func (conn NotegramConnection) Disconnect() {
 // Interfaz CRUD
 
 func (conn NotegramConnection) GetNotas(userid string) ([]Notes, error) {
-
 	var notas []Notes
 
 	db := conn.mongocli.Database(conn.database)
@@ -87,14 +86,22 @@ func (conn NotegramConnection) GetNotas(userid string) ([]Notes, error) {
 	return notas, err
 }
 
+// WriteNota(nota)
+// Escribe una nota en la BBDD mongodb.
 func (conn NotegramConnection) WriteNota(nota Notes) error {
+	db := conn.mongocli.Database(conn.database)
+	coll := db.Collection(conn.dbcollection)
+	_, err := coll.InsertOne(conn.ctx, &nota)
+	return err
+}
 
-	// Primero obtenemos todas las notas
-	// Si no hay notas, escribimos una entrada en la collection para ese usuario con una nota
-	// Si hay notas escribimos una más.
-
-	panic("Not implemented")
-
+// DeleteNotaById(id)
+// Borra la nota con el ID de mensaje pasada como argumento
+func (conn NotegramConnection) DeleteNotaByID(id primitive.ObjectID) error {
+	db := conn.mongocli.Database(conn.database)
+	coll := db.Collection(conn.dbcollection)
+	_, err := coll.DeleteOne(conn.ctx, bson.M{"_id": id})
+	return err
 }
 
 func (ee *DataError) Error() string {
