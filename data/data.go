@@ -27,26 +27,25 @@ type NotegramConnection struct {
 	dbcollection string        // Collection en la que buscamos
 	tguser       string        // Usuario de telegram
 	lastnote     string        // cache
-	ctx          context.Context
+	// unused // ctx          context.Context
 }
 
 type Notes struct {
 	Id              primitive.ObjectID `bson:"_id,omitempty"`
-	User            string             `bson:user`
+	User            string             `bson:"user"`
 	Content         string             `bson:"content"`
 	ContentType     string             `bson:"content_type"`
-	ContentEncoding string             `bson:"content_encoding.ifpresent`
+	ContentEncoding string             `bson:"content_encoding.ifpresent"`
 }
 
 // ConnectToDatabase: Conecta y hace ping al servidor
-// config.Connect() <-- Esta pidiendo esto ;-)
+// config.Connect() <-- Esta pidiendo una interfaz como esta ;-)
 func ConnectToDatabase(config core.NotegramConfig) (NotegramConnection, error) {
 
 	var dc NotegramConnection
 
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
-	// was: ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	// defer cancel() - quizá habría que hacer esto en cada llamada porsiaca.
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel() 
 
 	var connURI string = fmt.Sprintf("mongodb://%s:%s@%s:%d/%s",
 		config.Dbuser,
@@ -60,7 +59,6 @@ func ConnectToDatabase(config core.NotegramConfig) (NotegramConnection, error) {
 	dc.mongocli = client
 	dc.dbcollection = config.Dbcollection
 	dc.database = config.Dbase
-	dc.ctx = ctx // Necesitamos el context para llamar a mongodb
 
 	err = client.Ping(ctx, nil)
 
@@ -68,20 +66,25 @@ func ConnectToDatabase(config core.NotegramConfig) (NotegramConnection, error) {
 }
 
 func (conn NotegramConnection) Disconnect() {
-	conn.mongocli.Disconnect(conn.ctx)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel() 
+
+	conn.mongocli.Disconnect(ctx)
 	conn.mongocli = nil
-	conn.ctx = nil
 }
 
 // Interfaz CRUD
 
 func (conn NotegramConnection) GetNotas(userid string) ([]Notes, error) {
 	var notas []Notes
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel() 
 
 	db := conn.mongocli.Database(conn.database)
 	coll := db.Collection(conn.dbcollection)
-	cursor, err := coll.Find(conn.ctx, bson.M{"user": userid})
-	err = cursor.All(conn.ctx, &notas)
+	cursor, err := coll.Find(ctx, bson.M{"user": userid})
+	err = cursor.All(ctx, &notas)
 
 	return notas, err
 }
@@ -91,7 +94,9 @@ func (conn NotegramConnection) GetNotas(userid string) ([]Notes, error) {
 func (conn NotegramConnection) WriteNota(nota Notes) error {
 	db := conn.mongocli.Database(conn.database)
 	coll := db.Collection(conn.dbcollection)
-	_, err := coll.InsertOne(conn.ctx, &nota)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel() 
+	_, err := coll.InsertOne(ctx, &nota)
 	return err
 }
 
@@ -100,7 +105,9 @@ func (conn NotegramConnection) WriteNota(nota Notes) error {
 func (conn NotegramConnection) DeleteNotaByID(id primitive.ObjectID) error {
 	db := conn.mongocli.Database(conn.database)
 	coll := db.Collection(conn.dbcollection)
-	_, err := coll.DeleteOne(conn.ctx, bson.M{"_id": id})
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel() 
+	_, err := coll.DeleteOne(ctx, bson.M{"_id": id})
 	return err
 }
 
