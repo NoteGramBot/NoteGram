@@ -21,6 +21,15 @@ type DataError struct {
 	msg string
 }
 
+// Interfaz dateador para hacer inyección de dependencias
+type Dateador interface {
+	ConnectToDatabase(core.NotegramConfig) (Dateador, error)
+	Disconnect()
+	GetNotas(userid string) ([]Notes, error)
+	WriteNota(nota Notes) error
+	DeleteNotaByID(id string)
+}
+
 type NotegramConnection struct {
 	mongocli     *mongo.Client // Cliente de la base de datos
 	database     string        // Where data is stored
@@ -45,7 +54,7 @@ func ConnectToDatabase(config core.NotegramConfig) (NotegramConnection, error) {
 	var dc NotegramConnection
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel() 
+	defer cancel()
 
 	var connURI string = fmt.Sprintf("mongodb://%s:%s@%s:%d/%s",
 		config.Dbuser,
@@ -68,7 +77,7 @@ func ConnectToDatabase(config core.NotegramConfig) (NotegramConnection, error) {
 func (conn NotegramConnection) Disconnect() {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel() 
+	defer cancel()
 
 	conn.mongocli.Disconnect(ctx)
 	conn.mongocli = nil
@@ -79,7 +88,7 @@ func (conn NotegramConnection) Disconnect() {
 func (conn NotegramConnection) GetNotas(userid string) ([]Notes, error) {
 	var notas []Notes
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel() 
+	defer cancel()
 
 	db := conn.mongocli.Database(conn.database)
 	coll := db.Collection(conn.dbcollection)
@@ -95,7 +104,7 @@ func (conn NotegramConnection) WriteNota(nota Notes) error {
 	db := conn.mongocli.Database(conn.database)
 	coll := db.Collection(conn.dbcollection)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel() 
+	defer cancel()
 	_, err := coll.InsertOne(ctx, &nota)
 	return err
 }
@@ -106,7 +115,7 @@ func (conn NotegramConnection) DeleteNotaByID(id primitive.ObjectID) error {
 	db := conn.mongocli.Database(conn.database)
 	coll := db.Collection(conn.dbcollection)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel() 
+	defer cancel()
 	_, err := coll.DeleteOne(ctx, bson.M{"_id": id})
 	return err
 }
