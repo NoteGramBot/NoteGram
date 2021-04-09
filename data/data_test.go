@@ -7,8 +7,6 @@ import (
 	"math/rand"
 	"testing"
 	"time"
-
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 var cfg = core.NotegramConfig{
@@ -81,9 +79,9 @@ func TestMongoDBWriteReadDelete(t *testing.T) {
 	var testUsername = fmt.Sprintf("testuser_%020d", rand.Int63n(1000000000000000000))
 
 	var newNote = Notes{
-		Id:              primitive.NilObjectID,
+		Id:              "0x00000000",
 		User:            testUsername,
-		Content:         "This a string in UTF8 that can hold emoji 👏👏👏 + more contents.",
+		Content:         "👏👏👏  HELLO",
 		ContentType:     "text/plain",
 		ContentEncoding: "utf8",
 	}
@@ -95,11 +93,17 @@ func TestMongoDBWriteReadDelete(t *testing.T) {
 	}
 
 	err = conn.WriteNota(newNote)
+
+	fmt.Println("Writenota() -> err = ", err)
+
 	regs, err := conn.GetNotas(testUsername)
 	if err != nil {
 		t.Error("TestWrite: Fallo al escribir en la BBDD")
-
 	}
+
+	fmt.Printf("TESTNOTAS: GetNotas(%s) = %+v\n", testUsername, regs)
+
+	fmt.Println("TESTNOTAS:\n\terr = ", err, "\n\t regs = ", regs, "len(regs)=", len(regs))
 
 	readNote := regs[len(regs)-1]
 	readDocid := readNote.Id
@@ -107,7 +111,7 @@ func TestMongoDBWriteReadDelete(t *testing.T) {
 	log.Println("Registro escrito:\n\t", newNote)
 	log.Println("Registro leido:\n\t", readNote)
 
-	readNote.Id = primitive.NilObjectID
+	readNote.Id = "0x00000000"
 
 	if readNote != newNote {
 		t.Error("Las notas son diferentes -  escrito:", newNote, " leido: ", regs)
@@ -118,12 +122,14 @@ func TestMongoDBWriteReadDelete(t *testing.T) {
 	err = conn.DeleteNotaByID(readDocid)
 
 	if err != nil {
-		t.Error("Error al borrar la nota con id: ", readDocid)
+		t.Errorf("Error al borrar la nota con id: %s", readDocid)
 	}
 
 	// Volvemos a buscar el registro
 
 	regs, err = conn.GetNotas(testUsername)
+
+	fmt.Println("TESTNOTAS:\n\terr = ", err, "\n\t regs = ")
 
 	if len(regs) != 0 {
 		log.Println("Se ha encontrado un registro que debería estar borrado")

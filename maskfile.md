@@ -135,6 +135,13 @@ db.notas.deleteMany({});
 MONGO_EOF
 ~~~
 
+## dumpmongodb
+> Que carajo esta guardado en MONGODB ????
 
-B
+~~~sh
+mongo -host localhost <<MONGO_EOF
+use notegram
+
+db.notas.find({});
+
 
