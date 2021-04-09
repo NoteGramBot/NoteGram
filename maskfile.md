@@ -122,3 +122,19 @@ print("Setup terminado");
 MONGO_EOF
 ~~~
 
+## cleanmongodb
+
+> Borra contenido de la BBDD mongodb
+
+~~~sh
+mongo -host localhost <<MONGO_EOF
+use notegram
+
+db.notas.deleteMany({});
+
+MONGO_EOF
+~~~
+
+
+B
+
