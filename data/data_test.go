@@ -20,9 +20,20 @@ var cfg = core.NotegramConfig{
 	Loglevel:     "Debug",
 }
 
+func TestConnectInmemory(t *testing.T) {
+
+	dat := NewBackendInMemory()
+	d, err := dat.ConnectToDatabase(cfg)
+
+	fmt.Printf("dat: %v, d=%v, err=%v\n", dat, d, err)
+	fmt.Print("Dat == d -> ", (dat == d))
+
+}
+
 func TestConectaMongoDB(t *testing.T) {
 
-	conn, err := ConnectToDatabase(cfg)
+	dat := NewBackendInMemory()
+	conn, err := dat.ConnectToDatabase(cfg)
 	fmt.Println("conn: ", conn, " err: ", err)
 
 	// Para este test tenemos una bbdd en local con esas credenciales
@@ -35,33 +46,6 @@ func TestConectaMongoDB(t *testing.T) {
 	}
 
 	conn.Disconnect()
-
-}
-
-/*
- * TestFind() - Busca en la BBDD un registro de prueba
- * que incluimos en mask setupmongodb
- */
-
-func TestFind(t *testing.T) {
-
-	conn, err := ConnectToDatabase(cfg)
-	defer conn.Disconnect()
-
-	if err != nil {
-		// esto suena a integration test fallido
-		t.Error("TestFind(", cfg, ") FAILED wirt error ", err)
-	}
-
-	msgs, err := conn.GetNotas("test123")
-
-	if err != nil {
-		errmsg := "No se encuentra la entrada de test"
-		t.Error(errmsg)
-		log.Print(errmsg)
-	}
-
-	log.Print("Contenido de la BBDD: ", msgs)
 
 }
 
@@ -84,7 +68,10 @@ func TestMongoDBWriteReadDelete(t *testing.T) {
 		ContentEncoding: "utf8",
 	}
 
-	conn, err := ConnectToDatabase(cfg)
+	dat := NewBackendInMemory()
+	d, err := dat.ConnectToDatabase(cfg)
+	conn, err := d.ConnectToDatabase(cfg)
+
 	defer conn.Disconnect()
 
 	if err != nil {
@@ -95,6 +82,7 @@ func TestMongoDBWriteReadDelete(t *testing.T) {
 	err = conn.WriteNota(newNote)
 
 	fmt.Println("Writenota() -> err = ", err)
+	fmt.Println("Writenota backend ", d)
 
 	regs, err := conn.GetNotas(testUsername)
 	if err != nil {
