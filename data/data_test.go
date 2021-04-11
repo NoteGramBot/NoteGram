@@ -21,7 +21,6 @@ var cfg = core.NotegramConfig{
 }
 
 func TestConectaMongoDB(t *testing.T) {
-	// notegramConfig, err := core.GetConfig("testdata/localhost.json")
 
 	conn, err := ConnectToDatabase(cfg)
 	fmt.Println("conn: ", conn, " err: ", err)
@@ -35,8 +34,6 @@ func TestConectaMongoDB(t *testing.T) {
 		t.FailNow()
 	}
 
-	//Disconnect(conn)
-
 	conn.Disconnect()
 
 }
@@ -49,6 +46,7 @@ func TestConectaMongoDB(t *testing.T) {
 func TestFind(t *testing.T) {
 
 	conn, err := ConnectToDatabase(cfg)
+	defer conn.Disconnect()
 
 	if err != nil {
 		// esto suena a integration test fallido
@@ -87,6 +85,8 @@ func TestMongoDBWriteReadDelete(t *testing.T) {
 	}
 
 	conn, err := ConnectToDatabase(cfg)
+	defer conn.Disconnect()
+
 	if err != nil {
 		// esto suena a integration test fallido
 		t.Error("TestWrite(", cfg, ") FAILED trying to connect to database", err)
