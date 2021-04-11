@@ -34,7 +34,6 @@ type NotegramConnection struct {
 	dbcollection string        // Collection en la que buscamos
 	tguser       string        // Usuario de telegram
 	lastnote     string        // cache
-	// unused // ctx          context.Context
 }
 
 type NotesMongo struct {
@@ -45,7 +44,6 @@ type NotesMongo struct {
 func (n Notes) to_mongo() NotesMongo {
 	var nm NotesMongo
 	nm.Notes = n
-	fmt.Print("Calling: ", n)
 
 	oid, _ := primitive.ObjectIDFromHex(n.Id)
 	nm.mongoId = oid
@@ -98,28 +96,24 @@ func (conn NotegramConnection) GetNotas(userid string) ([]Notes, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	log.Printf("DEBUG GetNotas(%s)\n", userid)
-
 	db := conn.mongocli.Database(conn.database)
 	coll := db.Collection(conn.dbcollection)
 
-	filter := bson.M{"user": userid}
-
-	log.Printf("GetNotas - filter= %v\n", filter)
-	cursor, err := coll.Find(ctx, filter)
-
-	log.Printf("*****\ncoll.Find() ->\n\t cursor = r%+v, err %+v \n", cursor, err)
+	cursor, err := coll.Find(ctx, bson.M{"user": userid})
 
 	if err != nil {
-		log.Println("**************\n**********\n coll.Find() returned error -> ", err)
-	}
-	err = cursor.All(ctx, &retval)
-
-	if err != nil {
+		// Esto es raro: aunque no haya resultados coll.Find() siempre
+		// devuelve un cursor con 0 registros.
+		log.Print("Llamada a mongodb devolvío error ", err)
 		return nil, err
 	}
 
-	fmt.Printf("Getnotas(Userid = %s):\n\t Notasmongo = %+v", userid, retval)
+	err = cursor.All(ctx, &retval)
+
+	if err != nil {
+		log.Print("Cannot iterate cursos with find results ", err)
+		return nil, err
+	}
 
 	return retval, err
 }
@@ -142,7 +136,7 @@ func (conn NotegramConnection) DeleteNotaByID(id string) error {
 	oid, err := primitive.ObjectIDFromHex(id)
 	if err == nil {
 		// Este error debería estar en el inventario
-		log.Print("Invalid id (must be 12byte hex string)")
+		log.Print("Invalid id (must be 12byte hex string) ", err)
 		return err
 	}
 
