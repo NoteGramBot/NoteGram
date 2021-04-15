@@ -6,7 +6,6 @@
 package core
 
 import (
-	"Notegram/tg"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -65,8 +64,4 @@ func GetConfig(jsonfilename string) (NotegramConfig, error) {
 
 	return conf, err // the rust borrow checker would love this.
 
-}
-
-func CoreHello() string {
-	return "Hello from Core package AND tg/" + tg.TgHello()
 }
