@@ -1,6 +1,9 @@
 # Bot sencillo de Telegram usando lenguaje Go.
 
 [![Build Status](https://travis-ci.com/NoteGramBot/NoteGram.svg?branch=master)](https://travis-ci.com/NoteGramBot/NoteGram)
+
+[![codecov](https://codecov.io/gh/NoteGramBot/NoteGram/branch/master/graph/badge.svg?token=SN2PLXN3HK)](https://codecov.io/gh/NoteGramBot/NoteGram)
+
 [![Go Report Card](https://goreportcard.com/badge/github.com/NoteGramBot/NoteGram)](https://goreportcard.com/report/github.com/NoteGramBot/NoteGram)
 
 ## Problema
@@ -22,7 +25,8 @@ Antes de compilar y testear el código hay que instalar mask (basta con descarga
 
 Antes de compilar hay que cargar las dependencias con ```mask depend```. Esto obtendrá los paquetes externos de los que depende el bot.
 
-Para ejecutar los test:
+Para ejecutar los test (sin cobertura):
+
 ```
 mask test
 ```
@@ -30,6 +34,13 @@ mask test
 Para compilar el proyecto ejecutamos ```mask build``` desde el directorio raíz del proyecto.
 
 El ejecutable de salida estará en el la carpeta 📁 /bin del proyecto.
+
+Para ejecutar tests con cobertura:
+```
+mask coverage
+```
+
+Cuando pasamos los test *con* cobertura se genera un fichero `coverage.txt` en el directorio raíz del proyecto.
 
 ## Instalación/Uso (WIP)
 
