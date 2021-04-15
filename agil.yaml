@@ -25,4 +25,6 @@ testing:
     runner: mask
     framework: go
 
+# Interfaz dateador (abstrae el acceso a la BBDD para inyectar dependencias)
+dateador: data/data.go
 
