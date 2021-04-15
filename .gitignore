@@ -108,3 +108,6 @@ venv.bak/
 # Go Language convention
 bin/
 pkg/
+
+# Test de cobertura - por ahora no los quiero en el repo!
+/coverage.txt

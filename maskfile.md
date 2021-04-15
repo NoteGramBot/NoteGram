@@ -35,9 +35,15 @@ go get github.com/go-telegram-bot-api/telegram-bot-api
 
 ## test
 
-> Pasa los test del proyecto
+> Pasa los test del proyecto (sin cobertura)
 ~~~sh
 go test ./...
+~~~
+
+## coverage
+> Pasa los test del proyecto y produce un fichero de cobertura
+~~~sh
+go test ./... -race -coverprofile=coverage.txt -covermode=atomic
 ~~~
 
 
