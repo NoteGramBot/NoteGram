@@ -28,7 +28,6 @@ func main() {
 	telegram.StartBot(botconfig.Secret)
 
 	fmt.Println("main function")
-	fmt.Println(core.CoreHello())
 	fmt.Println(telegram.TgHello())
 
 }
