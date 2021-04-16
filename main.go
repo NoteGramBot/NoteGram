@@ -2,18 +2,17 @@ package main
 
 import (
 	"Notegram/core"
-	"Notegram/data"
 	telegram "Notegram/tg"
+	"flag"
 	"fmt"
-        "flag"
 )
 
 func main() {
 
-        // Command line arguments -f config_file_path
+	// Command line arguments -f config_file_path
 
-        configFilePtr := flag.String("f","config.json", "Path to config file")
-        flag.Parse()
+	configFilePtr := flag.String("f", "config.json", "Path to config file")
+	flag.Parse()
 
 	// Bootstrap notegram
 	// Obtiene datos de configuracion del fichero.
@@ -26,12 +25,10 @@ func main() {
 		fmt.Print(botconfig)
 	}
 
-        telegram.StartBot(botconfig.Secret)
-
+	telegram.StartBot(botconfig.Secret)
 
 	fmt.Println("main function")
 	fmt.Println(core.CoreHello())
-	fmt.Println(data.DataHello())
 	fmt.Println(telegram.TgHello())
 
 }

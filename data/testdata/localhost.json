@@ -1,10 +1,10 @@
 {
 "secret": "telegram_secret",
-"dbhost":"123.34.45.56",
+"dbhost":"127.0.0.1",
 "dbport": 27017, 
 "dbuser": "scott",
 "dbpass": "tiger",
-"database": "notegram"
+"database": "notegram",
 "dbcollection": "notas",
 "loglevel": "Debug"
 }

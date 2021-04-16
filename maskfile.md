@@ -73,3 +73,75 @@ for ff in files:
    print(f"Resultado:\n")
    pp.pprint(out)
 ~~~
+
+## gofmt
+
+> Formatea (todo) el código con gofmt
+
+~~~sh
+for i in $(find . -name '*.go') ; do
+   gofmt -s -w $i
+done
+~~~
+
+## setupmongodb
+
+> Crea entorno de test/desarrollo en mongodb
+
+El entorno contiene:
+ - Usuario scott para crear / acceder a notas.
+ - Base de datos 'notegram'
+ - Collection "notegram.notas"l
+ - Crea una primera nota de ejemplo para que db.notas.find()
+
+~~~sh
+mongo -host localhost <<MONGO_EOF
+use notegram
+
+try {
+   db.createUser({user:"scott", 
+               pwd:"tiger",
+               roles: [ { role:"readWrite", db: "notegram"}] });
+} catch (err) { print(err);}
+
+try {
+   db.createCollection("notas");
+} catch (err) { print(err);}
+
+try {
+   db.notas.insert({
+      user: "test123",
+      content: "Tercera nota (con cacteres unicode 💩💩💩 )",
+      content_type: "test/plain",
+      content_encoding: "utf8"
+   });
+} catch (err) { print(err);}
+
+print("Setup terminado");
+
+MONGO_EOF
+~~~
+
+## cleanmongodb
+
+> Borra contenido de la BBDD mongodb
+
+~~~sh
+mongo -host localhost <<MONGO_EOF
+use notegram
+
+db.notas.deleteMany({});
+
+MONGO_EOF
+~~~
+
+## dumpmongodb
+> Que carajo esta guardado en MONGODB ????
+
+~~~sh
+mongo -host localhost <<MONGO_EOF
+use notegram
+
+db.notas.find({});
+
+
