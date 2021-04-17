@@ -20,19 +20,9 @@ var cfg = core.NotegramConfig{
 	Loglevel:     "Debug",
 }
 
-func TestConnectInmemory(t *testing.T) {
+func TestConecta(t *testing.T) {
 
-	dat := NewBackendInMemory()
-	d, err := dat.ConnectToDatabase(cfg)
-
-	fmt.Printf("dat: %v, d=%v, err=%v\n", dat, d, err)
-	fmt.Print("Dat == d -> ", (dat == d))
-
-}
-
-func TestConectaMongoDB(t *testing.T) {
-
-	dat := NewBackendInMemory()
+	var dat = NotegramStorage{storage: NewBackendInMemory()}
 	conn, err := dat.ConnectToDatabase(cfg)
 	fmt.Println("conn: ", conn, " err: ", err)
 
@@ -54,7 +44,7 @@ func TestConectaMongoDB(t *testing.T) {
  * almacenando y recuperando el mismo registro
  */
 
-func TestMongoDBWriteReadDelete(t *testing.T) {
+func Test_WriteReadDelete(t *testing.T) {
 
 	rand.Seed(time.Now().UnixNano())
 
@@ -68,23 +58,23 @@ func TestMongoDBWriteReadDelete(t *testing.T) {
 		ContentEncoding: "utf8",
 	}
 
-	dat := NewBackendInMemory()
-	d, err := dat.ConnectToDatabase(cfg)
-	conn, err := d.ConnectToDatabase(cfg)
+	dat := NotegramStorage{storage: NewBackendInMemory()}
 
-	defer conn.Disconnect()
+	_, err := dat.ConnectToDatabase(cfg)
+
+	defer dat.Disconnect()
 
 	if err != nil {
 		// esto suena a integration test fallido
-		t.Error("TestWrite(", cfg, ") FAILED trying to connect to database", err)
+		t.Fatal("TestWrite(", cfg, ") FAILED trying to connect to database", err)
 	}
 
-	err = conn.WriteNota(newNote)
+	err = dat.WriteNota(newNote)
 
 	fmt.Println("Writenota() -> err = ", err)
-	fmt.Println("Writenota backend ", d)
+	fmt.Println("Writenota backend ", dat)
 
-	regs, err := conn.GetNotas(testUsername)
+	regs, err := dat.GetNotas(testUsername)
 	if err != nil {
 		t.Error("TestWrite: Fallo al escribir en la BBDD")
 	}
@@ -107,7 +97,7 @@ func TestMongoDBWriteReadDelete(t *testing.T) {
 
 	// Borramos el registro y comprobamos que no existe al leerlo
 
-	err = conn.DeleteNotaByID(readDocid)
+	err = dat.DeleteNotaByID(readDocid)
 
 	if err != nil {
 		t.Errorf("Error al borrar la nota con id: %s", readDocid)
@@ -115,7 +105,7 @@ func TestMongoDBWriteReadDelete(t *testing.T) {
 
 	// Volvemos a buscar el registro
 
-	regs, err = conn.GetNotas(testUsername)
+	regs, err = dat.GetNotas(testUsername)
 
 	fmt.Println("TESTNOTAS:\n\terr = ", err, "\n\t regs = ")
 
