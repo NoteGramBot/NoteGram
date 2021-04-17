@@ -44,7 +44,7 @@ func (ns NotegramStorage) ConnectToDatabase(config core.NotegramConfig) (Dateado
 }
 
 func (dt NotegramStorage) Disconnect() {
-	dt.Disconnect()
+	dt.storage.Disconnect()
 }
 
 func (dt NotegramStorage) GetNotas(user string) ([]Notes, error) {
@@ -63,7 +63,7 @@ func (dt NotegramStorage) WriteNota(nota Notes) error {
 	if err != nil {
 		log.Print("WriteNota: no se pudo escribir la nota ", err)
 	}
-	return dt.WriteNota(nota)
+	return err
 }
 
 func (dt NotegramStorage) DeleteNotaByID(id string) error {
