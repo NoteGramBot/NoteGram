@@ -29,7 +29,7 @@ go vet Notegram Notegram/core Notegram/tg Notegram/data
 ~~~sh
 echo "Instalando dependencias"
 BINDIR=$PWD/bin
-go get github.com/go-telegram-bot-api/telegram-bot-api
+go get -t github.com/go-telegram-bot-api/telegram-bot-api
 ~~~
 
 
