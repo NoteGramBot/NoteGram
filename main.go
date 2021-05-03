@@ -2,7 +2,6 @@ package main
 
 import (
 	"Notegram/core"
-	telegram "Notegram/tg"
 	"flag"
 	"fmt"
 )
@@ -25,9 +24,7 @@ func main() {
 		fmt.Print(botconfig)
 	}
 
-	telegram.StartBot(botconfig.Secret)
 
 	fmt.Println("main function")
-	fmt.Println(telegram.TgHello())
 
 }
