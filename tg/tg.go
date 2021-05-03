@@ -18,8 +18,8 @@ type BotConfig struct {
 type BotMessage struct {
 	ContentType string
 	Content []byte
-	From string
-	To string
+	From string // ChatID as string
+	To string // ChatID should go here
 }
 
 type BotInterface interface {
