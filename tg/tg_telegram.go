@@ -8,6 +8,7 @@ package tg
 import (
 	"fmt"
 	"log"
+	"strconv"
 
 	tg_botapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
@@ -15,7 +16,7 @@ import (
 type TelegramBotConfig struct {
 	Botconfig BotConfig
 	Client  *tg_botapi.BotAPI
-	lastupdate int
+	Lastupdate int
 }
 
 // tg.Startbot()
@@ -28,14 +29,13 @@ func NewTelegramBot() (TelegramBotConfig,error) {
 }
 
 
-func (bc *TelegramBotConfig) Connect(apikey string) {
-
+func (bc *TelegramBotConfig) Connect(apikey string) error {
 	bot, err := tg_botapi.NewBotAPI(apikey)
-
 	if err == nil {
 		bc.Client = bot
 		bc.Botconfig.BotName = bot.Self.FirstName
 	}
+	return err
 }
 
 /*
@@ -45,7 +45,7 @@ func (bc *TelegramBotConfig) Connect(apikey string) {
 
 func (bc *TelegramBotConfig) GetMessage() (BotMessage,error) {
 
-	updates, err := bc.Client.GetUpdatesChan(tg_botapi.NewUpdate(bc.lastupdate))
+	updates, err := bc.Client.GetUpdatesChan(tg_botapi.NewUpdate(bc.Lastupdate))
 
 	var msg = BotMessage{}
 
@@ -55,13 +55,16 @@ func (bc *TelegramBotConfig) GetMessage() (BotMessage,error) {
 	}
 	
 	uu := <- updates // blocks to get message
-	bc.lastupdate = uu.UpdateID + 1
+	bc.Lastupdate = uu.UpdateID + 1
+
+	// TODO: Look at IsMessageToMe(uu)
 
 	// By now, only text
 
 	if (uu.Message.Text != "") {
 		msg.ContentType 	= "text/plain"
 		msg.Content = []byte(uu.Message.Text)
+		msg.From = fmt.Sprintf("%d", uu.Message.Chat.ID) // +- user
 		return msg, nil
 	}
 
@@ -71,6 +74,23 @@ func (bc *TelegramBotConfig) GetMessage() (BotMessage,error) {
 
 }
 
+func (bc TelegramBotConfig) SendMessage(msg BotMessage) error {
+	chatid, _ := strconv.ParseInt(msg.To, 10,64)
+	sendmsg := tg_botapi.NewMessage(chatid, string(msg.Content))
+	sendmsg.ParseMode = "markdown"
+	_, err := bc.Client.Send(sendmsg)
+	return err
+}
+
+/* Unimplemented stuff */
+
+func (bc TelegramBotConfig) ListNotes() (msglist []BotMessage, err error) {
+	return nil, nil
+}
+
+func (bc TelegramBotConfig) Disconnect() error {
+    return nil
+}
 /*
 func Do_Bot(secret string) {
 
