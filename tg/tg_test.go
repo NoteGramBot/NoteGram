@@ -13,8 +13,8 @@ import (
 
 
 func Test_Example_Newbot(t *testing.T) {
-	var the_bot, _ = NewTelegramBot()	
-	err := the_bot.Connect(apikey_123")
+	var the_bot, _ = NewInmemoryBot()	
+	err := the_bot.Connect("apikey_123")
 	if err != nil {
 		log.Fatal("Cannot connect to Messaging service ", err)
 	}
