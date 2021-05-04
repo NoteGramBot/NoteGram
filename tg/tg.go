@@ -28,7 +28,7 @@ type BotInterface interface {
 	SendMessage(*BotMessage) error 
 	ListNotes() ([]BotMessage, error)
 	Disconnect(*BotConfig) error
-	GetNote(uint64) (*BotMessage, error)
+	// GetNote(uint64) (*BotMessage, error)
 }
 
 func (ee *TelegramError) Error() string {

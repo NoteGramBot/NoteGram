@@ -6,6 +6,9 @@
 package core
 
 import (
+	// "Notegram/data"
+	"Notegram/data"
+	"Notegram/tg"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -63,5 +66,45 @@ func GetConfig(jsonfilename string) (NotegramConfig, error) {
 	fmt.Println(conf)
 
 	return conf, err // the rust borrow checker would love this.
+
+}
+
+// 
+
+func BotMain(conf* NotegramConfig, botclient tg.BotInterface, db data.NotegramStorage) {
+
+	// Setip the bot
+
+	err := botclient.Connect(conf.Secret)
+	if err != nil {
+		log.Fatal("Cannot connect to Messaging service ", err)
+	}
+
+	_, err = db.ConnectToDatabase(conf)
+	defer db.Disconnect()
+
+	if err != nil {
+		log.Fatal("Cannot connect to Database ", err)
+	}
+
+	for 1 > 0 {
+		// Blocks until we get a message!
+		recvmsg, err := botclient.GetMessage()
+		if err != nil {
+			// maybe this timed out
+			log.Fatal("Cannot get messages ", err)
+		}
+
+		var usernote = Notes {
+			Id:              "0x00000000", // ya asignará una el backend
+			User:            recvmsg.From,
+			Content:         recvmsg.Content,
+			ContentType:     recvmsg.ContentType,
+			ContentEncoding: "utf8",	
+		}
+
+		// Store the message in the Database
+		db.WriteNota(usernote)
+	}
 
 }
