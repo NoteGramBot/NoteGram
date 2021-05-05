@@ -22,7 +22,7 @@ var cfg = core.NotegramConfig{
 
 func TestConecta(t *testing.T) {
 
-	var dat = NotegramStorage{storage: NewBackendInMemory()}
+	var dat = NotegramStorage{Storage: NewBackendInMemory()}
 	conn, err := dat.ConnectToDatabase(cfg)
 	fmt.Println("conn: ", conn, " err: ", err)
 
@@ -58,7 +58,7 @@ func Test_WriteReadDelete(t *testing.T) {
 		ContentEncoding: "utf8",
 	}
 
-	dat := NotegramStorage{storage: NewBackendInMemory()}
+	dat := NotegramStorage{Storage: NewBackendInMemory()}
 
 	_, err := dat.ConnectToDatabase(cfg)
 

@@ -23,7 +23,7 @@ type Notes struct {
 }
 
 type NotegramStorage struct {
-	storage Dateador
+	Storage Dateador
 }
 
 // Interfaz dateador para hacer inyección de dependencias
@@ -40,15 +40,15 @@ func (ee *DataError) Error() string {
 }
 
 func (ns NotegramStorage) ConnectToDatabase(config core.NotegramConfig) (Dateador, error) {
-	return ns.storage.ConnectToDatabase(config)
+	return ns.Storage.ConnectToDatabase(config)
 }
 
 func (dt NotegramStorage) Disconnect() {
-	dt.storage.Disconnect()
+	dt.Storage.Disconnect()
 }
 
 func (dt NotegramStorage) GetNotas(user string) ([]Notes, error) {
-	result, err := dt.storage.GetNotas(user)
+	result, err := dt.Storage.GetNotas(user)
 
 	if err != nil {
 		log.Print("GetNotas: No se pudo realizar la operación ", err)
@@ -59,7 +59,7 @@ func (dt NotegramStorage) GetNotas(user string) ([]Notes, error) {
 }
 
 func (dt NotegramStorage) WriteNota(nota Notes) error {
-	err := dt.storage.WriteNota(nota)
+	err := dt.Storage.WriteNota(nota)
 	if err != nil {
 		log.Print("WriteNota: no se pudo escribir la nota ", err)
 	}
@@ -67,7 +67,7 @@ func (dt NotegramStorage) WriteNota(nota Notes) error {
 }
 
 func (dt NotegramStorage) DeleteNotaByID(id string) error {
-	err := dt.storage.DeleteNotaByID(id)
+	err := dt.Storage.DeleteNotaByID(id)
 	if err != nil {
 		log.Printf("DeleteNota: no se pudo borrar la nota con id=%s %s", id, err)
 	}
