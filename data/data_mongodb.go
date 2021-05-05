@@ -28,7 +28,7 @@ import (
 //	DeleteNotaByID(id string)
 // }
 
-type NotegramConnection struct {
+type DateadorMongodb struct {
 	mongocli     *mongo.Client // Cliente de la base de datos
 	database     string        // Where data is stored
 	dbcollection string        // Collection en la que buscamos
@@ -52,11 +52,18 @@ func (n Notes) to_mongo() NotesMongo {
 	return nm // el compilador asigna nm en el heap, no en la pila???
 }
 
-// ConnectToDatabase: Conecta y hace ping al servidor
-// config.Connect() <-- Esta pidiendo una interfaz como esta ;-)
-func ConnectToDatabase(config core.NotegramConfig) (NotegramConnection, error) {
+// Constructor
 
-	var dc NotegramConnection
+func NewBackendMongodb() DateadorMongodb {
+	var dd DateadorMongodb
+	return dd
+}
+
+
+// ConnectToDatabase: Conecta y hace ping al servidor
+func (conn DateadorMongodb) ConnectToDatabase(config core.NotegramConfig) (Dateador, error) {
+
+	var dc DateadorMongodb
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -79,7 +86,7 @@ func ConnectToDatabase(config core.NotegramConfig) (NotegramConnection, error) {
 	return dc, err
 }
 
-func (conn NotegramConnection) Disconnect() {
+func (conn DateadorMongodb) Disconnect() {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -90,7 +97,7 @@ func (conn NotegramConnection) Disconnect() {
 
 // Interfaz CRUD
 
-func (conn NotegramConnection) GetNotas(userid string) ([]Notes, error) {
+func (conn DateadorMongodb) GetNotas(userid string) ([]Notes, error) {
 	var retval []Notes
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -120,7 +127,7 @@ func (conn NotegramConnection) GetNotas(userid string) ([]Notes, error) {
 
 // WriteNota(nota)
 // Escribe una nota en la BBDD mongodb.
-func (conn NotegramConnection) WriteNota(nota Notes) error {
+func (conn DateadorMongodb) WriteNota(nota Notes) error {
 	db := conn.mongocli.Database(conn.database)
 	coll := db.Collection(conn.dbcollection)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -131,7 +138,7 @@ func (conn NotegramConnection) WriteNota(nota Notes) error {
 
 // DeleteNotaById(id)
 // Borra la nota con el ID de mensaje pasada como argumento
-func (conn NotegramConnection) DeleteNotaByID(id string) error {
+func (conn DateadorMongodb) DeleteNotaByID(id string) error {
 
 	oid, err := primitive.ObjectIDFromHex(id)
 	if err == nil {
