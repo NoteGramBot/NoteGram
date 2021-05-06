@@ -41,29 +41,34 @@ func main() {
 
 }
 
-func BotMain (conf core.NotegramConfig, botclient tg.BotInterface, db data.NotegramStorage) {
+func BotMain (conf core.NotegramConfig, botclient tg.BotInterface, dbclient data.NotegramStorage) (num_msgs int32) {
 
-	// Setup the bot
+	var err error
 
-	err := botclient.Connect(conf.Secret)
+	err = botclient.Connect(conf.Secret)
 	if err != nil {
 		log.Fatal("Cannot connect to Messaging service ", err)
 	}
 
-	_, err = db.ConnectToDatabase(conf)
-	defer db.Disconnect()
+	_, err = dbclient.ConnectToDatabase(conf)
+	defer dbclient.Disconnect()
 
 	if err != nil {
 		log.Fatal("Cannot connect to Database ", err)
 	}
 
-	for 1 > 0 {
+	for err == nil {
 		// Blocks until we get a message!
-		recvmsg, err := botclient.GetMessage()
-		if err != nil {
+		recvmsg, ee := botclient.GetMessage()
+		if ee != nil {
 			// maybe this timed out
-			log.Fatal("Cannot get messages ", err)
+			log.Print("Cannot get messages ", err)
+			err = ee
+		} else {
+			num_msgs += 1
 		}
+
+		log.Printf("BOTMAIN - err=%v, ee=%v", err, ee)
 
 		var usernote = data.Notes {
 			Id:              "0x00000000", // ya asignará una el backend
@@ -74,7 +79,11 @@ func BotMain (conf core.NotegramConfig, botclient tg.BotInterface, db data.Noteg
 		}
 
 		// Store the message in the Database
-		db.WriteNota(usernote)
+		dbclient.WriteNota(usernote)
+
+		log.Printf("END OF LOOP: err=%v", err)
 	}
+
+	return num_msgs
 
 }
