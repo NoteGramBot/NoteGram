@@ -5,7 +5,6 @@ import (
 	"Notegram/data"
 	"Notegram/tg"
 	"flag"
-	"fmt"
 	"log"
 )
 
@@ -13,19 +12,32 @@ func main() {
 
 	// Command line arguments -f config_file_path
 
-	configFilePtr := flag.String("f", "config.json", "Path to config file")
+	configfile := flag.String("f", "config.json", "Path to config file")
 	flag.Parse()
 
 	// Bootstrap notegram
 	// Obtiene datos de configuracion del fichero.
 	// OJO: Algunos datos de la configuracion pueden ser sensibles!
 
-	botconfig, err := core.GetConfig(*configFilePtr)
+	botconfig, err := core.GetConfig(*configfile)
 
 	if err != nil {
-		fmt.Println("Configuration summary:")
-		fmt.Print(botconfig)
+		log.Printf("Error reading config file %s", *configfile)
+		log.Fatalf("Configuration read: %+v", botconfig )
 	}
+
+	// BotMain is a separate function to be able to test it ;-)
+
+	botclient, err := tg.NewTelegramBot() // new _telegram_ bot, not in-memory bot
+
+	if err != nil {
+		log.Fatal("Cannot create bot client")
+	}
+
+	dbclient := data.NotegramStorage{Storage: data.NewBackendMongodb()}
+
+
+	BotMain(botconfig, botclient, dbclient)
 
 }
 
