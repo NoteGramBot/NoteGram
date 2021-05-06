@@ -29,7 +29,7 @@ func NewTelegramBot() (TelegramBotConfig,error) {
 }
 
 
-func (bc *TelegramBotConfig) Connect(apikey string) error {
+func (bc TelegramBotConfig) Connect(apikey string) error {
 	bot, err := tg_botapi.NewBotAPI(apikey)
 	if err == nil {
 		bc.Client = bot
@@ -43,7 +43,7 @@ func (bc *TelegramBotConfig) Connect(apikey string) error {
  * Get the latest message from the bot (BLOCKING)
  */
 
-func (bc *TelegramBotConfig) GetMessage() (BotMessage,error) {
+func (bc TelegramBotConfig) GetMessage() (BotMessage,error) {
 
 	updates, err := bc.Client.GetUpdatesChan(tg_botapi.NewUpdate(bc.Lastupdate))
 
@@ -74,7 +74,7 @@ func (bc *TelegramBotConfig) GetMessage() (BotMessage,error) {
 
 }
 
-func (bc TelegramBotConfig) SendMessage(msg BotMessage) error {
+func (bc TelegramBotConfig) SendMessage(msg *BotMessage) error {
 	chatid, _ := strconv.ParseInt(msg.To, 10,64)
 	sendmsg := tg_botapi.NewMessage(chatid, string(msg.Content))
 	sendmsg.ParseMode = "markdown"

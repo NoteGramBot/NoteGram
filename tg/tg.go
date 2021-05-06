@@ -24,10 +24,10 @@ type BotMessage struct {
 
 type BotInterface interface {
 	Connect(string) error
-	GetMessage() (*BotMessage, error) 
+	GetMessage() (BotMessage, error) 
 	SendMessage(*BotMessage) error 
 	ListNotes() ([]BotMessage, error)
-	Disconnect(*BotConfig) error
+	Disconnect() error
 	// GetNote(uint64) (*BotMessage, error)
 }
 
