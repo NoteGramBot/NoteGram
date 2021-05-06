@@ -37,6 +37,7 @@ go get -t github.com/go-telegram-bot-api/telegram-bot-api
 
 > Pasa los test del proyecto (sin cobertura)
 ~~~sh
+clear
 go test ./...
 ~~~
 
