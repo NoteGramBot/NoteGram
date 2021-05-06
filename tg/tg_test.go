@@ -33,7 +33,7 @@ func Test_Example_Newbot(t *testing.T) {
 	msg.To = msg.From
 	msg.Content = []byte( fmt.Sprintf(">>> %s", msg.Content) )
 
-	err = the_bot.SendMessage(msg)
+	err = the_bot.SendMessage(&msg)
 
 	if err != nil {
 		log.Fatal("Cannot send message ", err)

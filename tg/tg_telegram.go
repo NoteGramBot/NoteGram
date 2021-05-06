@@ -23,13 +23,13 @@ type TelegramBotConfig struct {
 // Ejecuta el bot a partir de la configuracion
 
 
-func NewTelegramBot() (TelegramBotConfig,error) {
+func NewTelegramBot() (*TelegramBotConfig,error) {
 	bc,err := NewBot()
-	return TelegramBotConfig{Botconfig:bc}, err
+	return &TelegramBotConfig{Botconfig:bc}, err
 }
 
 
-func (bc TelegramBotConfig) Connect(apikey string) error {
+func (bc *TelegramBotConfig) Connect(apikey string) error {
 	bot, err := tg_botapi.NewBotAPI(apikey)
 	if err == nil {
 		bc.Client = bot
@@ -43,7 +43,7 @@ func (bc TelegramBotConfig) Connect(apikey string) error {
  * Get the latest message from the bot (BLOCKING)
  */
 
-func (bc TelegramBotConfig) GetMessage() (BotMessage,error) {
+func (bc *TelegramBotConfig) GetMessage() (BotMessage,error) {
 
 	updates, err := bc.Client.GetUpdatesChan(tg_botapi.NewUpdate(bc.Lastupdate))
 
@@ -74,7 +74,7 @@ func (bc TelegramBotConfig) GetMessage() (BotMessage,error) {
 
 }
 
-func (bc TelegramBotConfig) SendMessage(msg *BotMessage) error {
+func (bc *TelegramBotConfig) SendMessage(msg *BotMessage) error {
 	chatid, _ := strconv.ParseInt(msg.To, 10,64)
 	sendmsg := tg_botapi.NewMessage(chatid, string(msg.Content))
 	sendmsg.ParseMode = "markdown"
@@ -84,34 +84,10 @@ func (bc TelegramBotConfig) SendMessage(msg *BotMessage) error {
 
 /* Unimplemented stuff */
 
-func (bc TelegramBotConfig) ListNotes() (msglist []BotMessage, err error) {
+func (bc *TelegramBotConfig) ListNotes() (msglist []BotMessage, err error) {
 	return nil, nil
 }
 
-func (bc TelegramBotConfig) Disconnect() error {
+func (bc *TelegramBotConfig) Disconnect() error {
     return nil
 }
-/*
-func Do_Bot(secret string) {
-
-	bot, err := tg_botapi.NewBotAPI(secret)
-
-	fmt.Println("Bot Name: " + bot.Self.FirstName)
-
-	updates, err := bot.GetUpdatesChan(tg_botapi.NewUpdate(0))
-
-	for uu := range updates {
-
-		if uu.Message != nil {
-			fmt.Println("Update: " + uu.Message.Text)
-			// Devuelve el mensaje (echo server)
-			sendmsg := tg_botapi.NewMessage(uu.Message.Chat.ID, "> "+uu.Message.Text)
-			sendmsg.ParseMode = "markdown"
-			bot.Send(sendmsg)
-		}
-
-	}
-
-}
-
-*/
